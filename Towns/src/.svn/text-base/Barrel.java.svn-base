@@ -4,7 +4,7 @@ import java.awt.Color;
 public class Barrel {
 	private int x;
 	private int y;
-	private final int SIZE = 30;
+	private final int SIZE = 20;
 	private int appleCount = 0;
 	
 	public Barrel(int x, int y) {
@@ -14,12 +14,12 @@ public class Barrel {
 	
 	public void draw(){
 		//Barrel
-		Zen.drawImage("barrel.png", x, y, SIZE, SIZE+10);
+		Zen.drawImage("barrel.png", x, y, SIZE, SIZE + 5);
 		
 		//Count
 		Zen.setColor(Color.WHITE);
 		Zen.setFont("Helvetica-14");
-		Zen.drawText("Apples: " + appleCount, x - 5, y - 15);
+		Zen.drawText("Apples: " + appleCount, x - 10, y - 10);
 	}
 	
 	public int getX() {

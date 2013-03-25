@@ -4,6 +4,7 @@ import java.awt.Color;
 public class Guy {
 	private String name;
 	private String[] names = new String[]{"DannyTheGiraffe","JoeTheTall","HandlePledge","AlpTheIraqi","DavidTheTeaMaster","JimThePussy","SchnitzTheLargeMouth","CesarioTheItalian","ZacTheStallion","JakeTheFIFALoser"};
+	private String state;
 	private int x;
 	private int y;
 	private int goalX;
@@ -13,7 +14,7 @@ public class Guy {
 	private final int SIZE = 20;
 	private int sleep = 100;
 	private int hunger = 100;
-	private boolean hasTargetApple = false;
+	private Apple targetApple;
 	private boolean goToBarrel = false;
 	
 	//Constructors
@@ -32,15 +33,11 @@ public class Guy {
 	public int getY(){
 		return this.y;
 	}
-	public boolean hasTargetApple() {
-		return hasTargetApple;
-	}
-
-	public void setHasTargetApple(boolean hasTargetApple) {
-		this.hasTargetApple = hasTargetApple;
-	}
 	public int getSIZE() {
 		return SIZE;
+	}
+	public void setTargetApple(Apple a){
+		targetApple = a;
 	}
 	
 	//Functions
@@ -49,8 +46,8 @@ public class Guy {
 		goalY = yy;
 	}
 	
-	public void doYourThing(AppleList a, Barrel b, Home h){
-		chooseGoal(a,b,h);
+	public void doYourThing(AppleList a, Barrel b, Home h , Map m){
+		chooseGoal(a,b,h,m);
 		move(moveSpeed);
 	}
 	
@@ -67,7 +64,7 @@ public class Guy {
 	}
 	
 	public void checkHomeCollision(Home h){
-		if(collided(h.getX(), h.getY(), h.getSIZE(), h.getSIZE()) && sleep < 100){
+		if(collided(h.getX() - SIZE, h.getY() - SIZE, 2 * SIZE, 2 * SIZE) && sleep < 100){
 			sleep++;
 		}
 	}
@@ -102,6 +99,7 @@ public class Guy {
 		Zen.setFont("Helvetica-10");
 		Zen.drawText("Sleep: " + sleep, x - 5, y - 15);
 		Zen.drawText("Hunger: " + hunger, x - 6, y - 30);
+		Zen.drawText("State: " + state, x - 5, y - 45);
 		Zen.setFont("Helvetica-10");
 		Zen.drawText(name, x - 5, y + SIZE + 15);
 	}
@@ -125,41 +123,51 @@ public class Guy {
 		return false;
 	}
 
-	private void chooseGoal(AppleList a, Barrel b, Home h){
+	private void chooseGoal(AppleList a, Barrel b, Home h, Map m){
 		if(hunger < 50){	//Go to barrel
+			state = "eating";
 			goalX = b.getX();
 			goalY = b.getY() + 20;
 		}
 		else if(sleep < 50 || (sleep != 100 && collided(h.getX(), h.getY(), h.getSIZE(), h.getSIZE()))){	//Go home
+			state = "sleeping";
 			goalX = h.getX();
 			goalY = h.getY();
 		}
 		
-		else if(b.getAppleCount() < 10 || this.hasTargetApple){	//Gather apples
+		else if(b.getAppleCount() < 10 || targetApple != null){	//Gather apples
+			state = "gathering apples";
 			if(goToBarrel){	//To barrel
 				goalX = b.getX();
 				goalY = b.getY();
 			}
+			else if(targetApple != null){
+				goalX = targetApple.getX();
+				goalY = targetApple.getY();				
+			}
 			else{
 				for(int i = 0; i < a.length(); i++){ //Find new target apple
-					if(!hasTargetApple && a.appleAt(i).isTargetedBy(null)){
+					if(a.appleAt(i).isTargetedBy(null)){
 						a.appleAt(i).setTargetedBy(this);
-						this.hasTargetApple = true;
-						goalX = a.appleAt(i).getX();
-						goalY = a.appleAt(i).getY();
+						targetApple = a.appleAt(i);
 						return;
 					}
 				}
 			}
 		}
 		else {
-			wander();
+			state = "idle";
+			wander(m);
 		}
 	}
-	private void wander(){
-		if(System.currentTimeMillis() - timestamp > 3000){
-			goalX = this.x + (int)(Math.random() * 100 - 50);
-			goalY = this.y + (int)(Math.random() * 100 - 50);
+	private void wander(Map m){
+		if(System.currentTimeMillis() - timestamp > 1000){
+			int tryX = this.x + (int)(Math.random() * 100 - 50);
+			int tryY = this.y + (int)(Math.random() * 100 - 50);
+			if(tryX > 0 && tryY > 0 && tryX < Zen.getZenWidth() && tryY < Zen.getZenHeight() && m.isLocationPassible(tryX, tryY)){
+				goalX = tryX;
+				goalY = tryY;
+			}
 			this.timestamp = System.currentTimeMillis();
 		}
 	}

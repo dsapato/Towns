@@ -59,9 +59,8 @@ public class Apple {
 	
 	public boolean checkBarrelCollision(Barrel b){
 		if(collided(b.getX(), b.getY(), b.getSIZE(), b.getSIZE()) && carrier != null){
-			carrier.setHasTargetApple(false);
 			b.incrementAppleCount(1);
-			this.x = 50;
+			carrier.setTargetApple(null);
 			return true;
 		}
 		return false;

@@ -351,7 +351,7 @@ public class Zen extends JApplet {
 	}
 
 	public static void copyArrayToImage(int[][] pixels, BufferedImage img) {
-		final int pHeight = pixels.length, pWidth = pixels[0].length;
+		final int pWidth = pixels.length, pHeight = pixels[0].length;
 		final int iHeight = img.getHeight(), iWidth = img.getWidth();
 		final int width = Math.min(pWidth, iWidth);
 		final int height = Math.min(pHeight, iHeight);
@@ -360,7 +360,7 @@ public class Zen extends JApplet {
 					+ height);
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++)
-				img.setRGB(x, y, pixels[y][x]);
+				img.setRGB(x, y, pixels[x][y]);
 	}
 
 	/*

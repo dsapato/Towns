@@ -21,7 +21,7 @@ public class Home {
 		return SIZE;
 	}
 
-	private final int SIZE = 40;
+	private final int SIZE = 20;
 	
 	public Home(int x, int y) {
 		this.x = x;

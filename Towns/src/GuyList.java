@@ -21,9 +21,9 @@ public class GuyList {
 		}
 	}
 	
-	public void doYourThingAll(AppleList a, Barrel b, Home h){
+	public void doYourThingAll(AppleList a, Barrel b, Home h, Map m){
 		for(int i = 0; i < array.length; i++){
-			array[i].doYourThing(a, b, h);
+			array[i].doYourThing(a, b, h, m);
 		}
 	}
 	
@@ -34,11 +34,6 @@ public class GuyList {
 			for(int j = 0; j < a.length(); j++){
 				array[i].checkAppleCollision(a.appleAt(j));
 			}
-			//for(int k = 0; k < array.length; k++){
-			//	if(i != k){
-			//		array[i].checkGuyCollision(array[k]);
-			//	}
-			//}
 		}
 	}	
 }
