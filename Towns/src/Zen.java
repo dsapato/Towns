@@ -158,6 +158,10 @@ public class Zen extends JApplet {
 	public static int getMouseButtonsAndModifierKeys() {
 		return getInstanceFromThread().getMouseButtonsAndModifierKeys();
 	}
+	
+	public static int getMouseState(){
+		return getInstanceFromThread().getMouseState();
+	}
 
 	public static int getMouseX() {
 		return getInstanceFromThread().getMouseX();
@@ -165,6 +169,10 @@ public class Zen extends JApplet {
 
 	public static int getMouseY() {
 		return getInstanceFromThread().getMouseY();
+	}
+	
+	public static JFrame getJFrame(){
+		return getInstanceFromThread().getJFrame();
 	}
 
 	public static void sleep(int milliseconds) {
@@ -327,7 +335,7 @@ public class Zen extends JApplet {
 		int width = pixels[0].length, height = pixels.length;
 		BufferedImage image = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
-		copyArrayToImage(pixels, image);
+		copyArrayToImage(pixels, image, 0, 0);
 		return image;
 	}
 
@@ -350,7 +358,7 @@ public class Zen extends JApplet {
 		}
 	}
 
-	public static void copyArrayToImage(int[][] pixels, BufferedImage img) {
+	public static void copyArrayToImage(int[][] pixels, BufferedImage img, int xShift, int yShift) {
 		final int pWidth = pixels.length, pHeight = pixels[0].length;
 		final int iHeight = img.getHeight(), iWidth = img.getWidth();
 		final int width = Math.min(pWidth, iWidth);
@@ -360,7 +368,7 @@ public class Zen extends JApplet {
 					+ height);
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++)
-				img.setRGB(x, y, pixels[x][y]);
+				img.setRGB(x, y, pixels[x + xShift][y + yShift]);
 	}
 
 	/*
@@ -418,6 +426,10 @@ public class Zen extends JApplet {
 		public int getMouseButtonsAndModifierKeys() {
 			return mouseButtonsAndModifierKeys;
 		}
+		
+		public int getMouseState(){
+			return mouseState;
+		}
 
 		public int getMouseX() {
 			return mouseX;
@@ -425,6 +437,10 @@ public class Zen extends JApplet {
 
 		public int getMouseY() {
 			return mouseY;
+		}
+		
+		public JFrame getJFrame(){
+			return frame;
 		}
 
 		public boolean isKeyPressed(char key) {
@@ -718,6 +734,7 @@ public class Zen extends JApplet {
 	private Color currentColor = Color.WHITE;
 	private Font currentFont = Font.decode("Times-18");
 	private int mouseButtonsAndModifierKeys;
+	private int mouseState;
 	private boolean isRunning = true;
 	private Thread mainThreadForWebApplet;
 	private int paintAtX, paintAtY, windowWidth, windowHeight;
@@ -918,8 +935,20 @@ public class Zen extends JApplet {
 					* bufferSize.height / (double) windowHeight) : me.getY()
 					- paintAtY);
 			mouseClickTime = me.getWhen();
+			mouseState = MouseEvent.MOUSE_CLICKED;
 		}
-
+		@Override			//Danny Sapato
+		public void mousePressed(MouseEvent me){
+			mouseState = MouseEvent.MOUSE_PRESSED;
+		}
+		@Override			//Danny Sapato
+		public void mouseReleased(MouseEvent me){
+			mouseState = MouseEvent.MOUSE_RELEASED;
+		}
+		@Override			//Danny Sapato
+		public void mouseExited(MouseEvent me){
+			mouseState = MouseEvent.MOUSE_EXITED;
+		}
 	}; // MouseListener
 	private MouseMotionListener mouseMotionListener = new MouseMotionAdapter() {
 		public void mouseMoved(MouseEvent me) {
@@ -929,13 +958,14 @@ public class Zen extends JApplet {
 					/ (double) windowWidth) : me.getX() - paintAtX);
 			mouseY = (stretchToFit ? (int) (0.5 + me.getY() * bufferSize.height
 					/ (double) windowHeight) : me.getY() - paintAtY);
-			mouseButtonsAndModifierKeys = me.getModifiersEx();
+			//mouseButtonsAndModifierKeys = me.getModifiersEx();		Danny Sapato
 		}
 
 		public void mouseDragged(MouseEvent e) {
 			mouseListener.mouseClicked(e);
 			mouseMoved(e);
 		}
+			
 	}; // MouseMotionListener
 
 };// End of class

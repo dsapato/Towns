@@ -44,9 +44,9 @@ public class Apple {
 	}
 	
 	public void draw(){
-		Zen.drawImage("apple.png", x, y, SIZE, SIZE);
+		Zen.drawImage("apple.png", x - Game.screenXPos, y - Game.screenYPos, SIZE, SIZE);
 		if(targetedBy != null){
-			Zen.drawText("Targeted.", x, y);
+			Zen.drawText("Targeted.", x  - Game.screenXPos, y - Game.screenYPos);
 		}
 	}
 	

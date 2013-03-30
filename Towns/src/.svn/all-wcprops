@@ -13,13 +13,13 @@ Guy.java
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/Guy.java
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/Guy.java
 END
 MapTile.java
 K 25
 svn:wc:ra_dav:version-url
 V 68
-/svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/MapTile.java
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/MapTile.java
 END
 guy.png
 K 25
@@ -31,7 +31,7 @@ GuyList.java
 K 25
 svn:wc:ra_dav:version-url
 V 68
-/svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/GuyList.java
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/GuyList.java
 END
 grass.jpg
 K 25
@@ -55,7 +55,7 @@ Zen.java
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/Zen.java
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/Zen.java
 END
 Home.java
 K 25
@@ -79,7 +79,7 @@ Map.java
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/Map.java
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/Map.java
 END
 apple.png
 K 25
@@ -99,15 +99,33 @@ svn:wc:ra_dav:version-url
 V 70
 /svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/AppleList.java
 END
+tree.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/tree.png
+END
 home.png
 K 25
 svn:wc:ra_dav:version-url
 V 64
 /svn/sp13-cs125/!svn/ver/23589/sapato2/AIMessAround/src/home.png
 END
+AStar.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/AStar.java
+END
 Game.java
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/sp13-cs125/!svn/ver/25289/sapato2/AIMessAround/src/Game.java
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/Game.java
+END
+Button.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/sp13-cs125/!svn/ver/26403/sapato2/AIMessAround/src/Button.java
 END

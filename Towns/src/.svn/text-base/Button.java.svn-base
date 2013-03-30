@@ -1,0 +1,61 @@
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+
+public class Button extends JPanel implements MouseListener {
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	private String title;
+	private Color color;
+	private boolean clicked = false;
+
+	public Button(int xx, int yy, int w, int h, String title){
+		super(new BorderLayout());
+		this.x = xx;
+		this.y = yy;
+		this.width = w;
+		this.height = h;
+		this.title = title;
+		color = Color.BLACK;
+		JButton button = new JButton("Button");
+		button.setBounds(xx, yy, w, h);
+		button.setEnabled(true);
+		button.setPreferredSize(new Dimension(w,h));
+		add(button, BorderLayout.CENTER);
+		button.addMouseListener(this);
+	}
+	
+	  public void mousePressed(MouseEvent e) {}
+	  public void mouseReleased(MouseEvent e) {clicked = true;}
+	  public void mouseEntered(MouseEvent e) {color = Color.DARK_GRAY;}
+	  public void mouseExited(MouseEvent e) {color = Color.BLACK;}
+	  public void mouseClicked(MouseEvent e) {clicked = true;}
+	
+	public boolean isHovered(){
+		if(this.x + this.width > Zen.getMouseX() && this.x < Zen.getMouseX()){
+			if(this.y + this.height > Zen.getMouseY() && this.y < Zen.getMouseY()){
+				return true;
+			}
+		}
+		return false;
+	}	
+	public boolean isClicked(){
+		return clicked;
+	}
+	
+	public void draw(){
+		Zen.setColor(color);
+		Zen.fillRect(x, y, width, height);
+		Zen.setColor(Color.WHITE);
+		Zen.drawText(title, x, y + height*3/4);
+	}
+}

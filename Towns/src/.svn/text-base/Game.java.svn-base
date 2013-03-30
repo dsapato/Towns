@@ -1,58 +1,92 @@
 import java.awt.Color;
 
+import javax.swing.JComponent;
+
 public class Game {
 
 	public static void main(String[] args) {
 		
-		Map map = new Map(1370,770);
-		map.draw();
+		Map map = new Map(Zen.getZenWidth(), Zen.getZenHeight());
+		map.create();
 		GuyList guyList = new GuyList();
-		for(int i = 0; i < 6; i++){
-			guyList.add(new Guy((int)(Math.random()*200),(int)(Math.random()*700), 5, (int)(Math.random()*10)));
-		}
-		
 		Home home = new Home(map.getHome().x * 20,map.getHome().y * 20);
 		Barrel barrel = new Barrel(map.getBarrel().x * 20, map.getBarrel().y * 20);
 		AppleList appleList = new AppleList();
+		Button button = new Button(10, Zen.getZenHeight() - 30, 80, 20, "New Guy");
+		//JComponent jbutton = button;
+		//jbutton.setOpaque(true);
+		//Zen.getJFrame().setContentPane(jbutton);
+		//Zen.getJFrame().validate();
+		int frames = 0;
+		long now;
+		long framesTimer = 0;
+		int FPS = 0;
+		boolean paused = false;
 		
-		while(Zen.isRunning()){
-			
-			//Check for escape key to quit
+		while(Zen.isRunning()){	
+			//Check for escape
 			if(Zen.isKeyPressed((char)27)){
 				Zen.closeWindow();
 				System.exit(0);
-			}
-			
-			//Background			
-			Zen.drawImage(map.getMapImg(), 0, 0);	
-			
-			//AI
-			guyList.doYourThingAll(appleList, barrel, home, map);
-			
-			//Update AppleList
-			appleList.update(map);
-		
-			//CheckCollisions
-			guyList.checkCollions(appleList, barrel, home);
-			appleList.checkBarrelCollision(barrel);
-				
-			//Draw
-			guyList.drawAll();
-			home.draw();
-			barrel.draw();
-			appleList.drawAll();
-			
-			
-			//Pause
+			}	
+			//Check for unpause
 			if(Zen.isKeyPressed(' ')){
-				Zen.setColor(Color.WHITE);
-				Zen.setFont("Helvetica-40");
-				Zen.drawText("Paused", Zen.getZenWidth()/2 - 30, Zen.getZenHeight()/2);
-				Zen.waitForClick();
+				paused = false;
 			}
 			
-			Zen.flipBuffer();
-			Zen.sleep(10);
+			while(!paused){
+				//Check for escape key to quit
+				if(Zen.isKeyPressed((char)27)){
+					Zen.closeWindow();
+					System.exit(0);
+				}	
+				
+				//Background			
+				Zen.drawImage(map.getMapImg(), 0, 0);
+				
+				//AI
+				guyList.doYourThingAll(appleList, barrel, home, map);
+				
+				//Update AppleList
+				appleList.update(map);
+			
+				//CheckCollisions
+				guyList.checkCollions(appleList, barrel, home);
+				appleList.checkBarrelCollision(barrel);
+				if(button.isClicked()){
+					guyList.setNumberOfGuys(guyList.getNumberOfGuys() + 1);
+				}
+					
+				//Draw
+				guyList.drawAll();
+				home.draw();
+				barrel.draw();
+				appleList.drawAll();
+				button.draw();
+				
+				
+				//Pause
+				if(Zen.isKeyPressed(' ')){
+					Zen.setColor(Color.WHITE);
+					Zen.setFont("Helvetica-40");
+					Zen.drawText("Paused", Zen.getZenWidth()/2 - 90, Zen.getZenHeight()/2);
+					Zen.setFont("Helvetica-14");
+					paused = true;
+				}
+				
+				//FPS Counter
+				Zen.drawText("FPS: " + FPS, 10, 20);
+				frames++;
+				now = System.currentTimeMillis();
+				if(now - framesTimer > 1000){
+					framesTimer = System.currentTimeMillis();
+					FPS = frames;
+					frames = 0;
+				}
+				
+				Zen.flipBuffer();
+			
+			}
 		}
 
 	}

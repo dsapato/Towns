@@ -15,6 +15,7 @@ public class Map {
 	
 	private MapTile home;
 	private MapTile barrel;
+	private MapTile spawn;
 	
 	//Constructors
 	public Map(int width, int height){
@@ -29,6 +30,10 @@ public class Map {
 	public BufferedImage getMapImg() {
 		return img;
 	}
+	
+	public MapTile[][] getMap() {
+		return map;
+	}	
 	
 	public MapTile getHome() {
 		return home;
@@ -45,9 +50,22 @@ public class Map {
 	public void setBarrel(MapTile barrel) {
 		this.barrel = barrel;
 	}
+	
+	public MapTile getSpawn() {
+		return spawn;
+	}
+
+	public void setSpawn(MapTile spawn) {
+		this.spawn = spawn;
+	}
+
+	public void setMapTile(MapTile m){
+		map[m.getX()][m.getY()] = m;
+		redrawTile(m);
+	}
 
 	//Functions
-	public void draw(){
+	public void create(){
 
 		for(int i = 0; i < map.length; i++){
 			for(int j = 0; j < map[0].length; j++){
@@ -67,8 +85,7 @@ public class Map {
 			}
 		}
 
-		Zen.copyArrayToImage(mapColors, img);
-		//Zen.drawImage(img, 0, 0);
+		Zen.copyArrayToImage(mapColors, img, Game.screenXPos, Game.screenYPos);
 	}
 	
 
@@ -106,15 +123,21 @@ public class Map {
 				//Land
 				else if(map[i][j] == null){
 					//Grass
-					map[i][j] = new MapTile(i,j, "grass", true);
+					if(Math.random() > .1)
+						map[i][j] = new MapTile(i,j, "grass", true);
+					else{
+						map[i][j] = new MapTile(i,j, "tree", false);
+					}
 				}
 			}
 		}					
-		//Home
+		//Special tiles
 		placeHome();
 		placeBarrel();
+		placeSpawn();
+		
 	}
-	
+
 	private void changeWaterCount(){
 		double chance = Math.random(); 
 		if(chance > .6 && waterCount < 5)waterCount++;
@@ -126,7 +149,7 @@ public class Map {
 			int tryX =(int)(Math.random() * map.length);
 			int tryY =(int)(Math.random() * map[0].length);
 			if(map[tryX][tryY].isPassible()){
-				home = new MapTile(tryX,tryY, "grass", false);
+				home = new MapTile(tryX,tryY, "grass", true);
 				map[tryX][tryY] = home;
 				return;
 			}
@@ -137,14 +160,48 @@ public class Map {
 			int tryX =(int)(Math.random() * map.length);
 			int tryY =(int)(Math.random() * map[0].length);
 			if(map[tryX][tryY].isPassible()){
-				barrel = new MapTile(tryX,tryY, "grass", false);
+				barrel = new MapTile(tryX,tryY, "grass", true);
 				map[tryX][tryY] = barrel;
+				return;
+			}
+		}
+	}
+	private void placeSpawn(){
+		while(true){
+			int tryX =(int)(Math.random() * map.length);
+			int tryY =(int)(Math.random() * map[0].length);
+			if(map[tryX][tryY].isPassible()){
+				spawn = new MapTile(tryX,tryY, "grass", true);
+				map[tryX][tryY] = spawn;
 				return;
 			}
 		}
 	}
 	
 	public boolean isLocationPassible(int x, int y){
+		if(x/TILESIZE >= map.length || y/TILESIZE >= map[0].length){
+			return false;
+		}
 		return map[x/TILESIZE][y/TILESIZE].isPassible();
+	}
+	
+	public void update(){
+		
+	}
+	
+	public void redrawTile(MapTile m){
+		BufferedImage tile = new BufferedImage(20, 20, BufferedImage.TYPE_INT_RGB);
+		try {
+			tile = ImageIO.read(new File("C:\\Users\\Danny\\Towns\\Towns\\Resources\\First Tiles\\" + m.getType() + ".png"));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(int k = 0; k < TILESIZE; k++){
+			for(int l = 0; l < TILESIZE; l++){
+				if(img != null)
+					img.setRGB(m.getX() * TILESIZE + k, m.getY() * TILESIZE + l, tile.getRGB(k, l));
+			}
+		}
 	}
 }

@@ -52,8 +52,8 @@ public class AppleList {
 	
 	public void update(Map m){
 		if(array.length < 15){
-			int tryX = (int)(Math.random()*1300);
-			int tryY = (int)(Math.random()*700);
+			int tryX = (int)(Math.random()* Game.mapWidth);
+			int tryY = (int)(Math.random()* Game.mapHeight);
 			if(m.isLocationPassible(tryX, tryY)){
 				this.add(new Apple(tryX,tryY));
 			}

@@ -14,12 +14,12 @@ public class Barrel {
 	
 	public void draw(){
 		//Barrel
-		Zen.drawImage("barrel.png", x, y, SIZE, SIZE + 5);
+		Zen.drawImage("barrel.png", x - Game.screenXPos, y - Game.screenYPos, SIZE, SIZE + 5);
 		
 		//Count
 		Zen.setColor(Color.WHITE);
 		Zen.setFont("Helvetica-14");
-		Zen.drawText("Apples: " + appleCount, x - 10, y - 10);
+		Zen.drawText("Apples: " + appleCount, x - 10 - Game.screenXPos, y - 10 - Game.screenYPos);
 	}
 	
 	public int getX() {

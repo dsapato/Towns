@@ -166,6 +166,10 @@ public class Zen extends JApplet {
 	public static int getMouseY() {
 		return getInstanceFromThread().getMouseY();
 	}
+	
+	public static JFrame getJFrame(){
+		return getInstanceFromThread().getJFrame();
+	}
 
 	public static void sleep(int milliseconds) {
 		try {
@@ -425,6 +429,10 @@ public class Zen extends JApplet {
 
 		public int getMouseY() {
 			return mouseY;
+		}
+		
+		public JFrame getJFrame(){
+			return frame;
 		}
 
 		public boolean isKeyPressed(char key) {
@@ -918,6 +926,11 @@ public class Zen extends JApplet {
 					* bufferSize.height / (double) windowHeight) : me.getY()
 					- paintAtY);
 			mouseClickTime = me.getWhen();
+		}
+		@Override
+		public void mouseReleased(MouseEvent me){			//Danny Sapato
+			super.mouseReleased(me);
+			mouseButtonsAndModifierKeys = me.getModifiersEx();		
 		}
 
 	}; // MouseListener

@@ -29,6 +29,6 @@ public class Home {
 	}
 	
 	public void draw(){
-		Zen.drawImage("home.png", x, y, SIZE, SIZE);
+		Zen.drawImage("home.png", x - Game.screenXPos, y - Game.screenYPos, SIZE, SIZE);
 	}
 }

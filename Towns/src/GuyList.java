@@ -1,11 +1,21 @@
 
 public class GuyList {
 	private Guy[] array;
+	private int numberOfGuys;
 	
 	public GuyList(){
 		array = new Guy[0];
-	}
+		numberOfGuys = 6;
+	}	
 	
+	public int getNumberOfGuys() {
+		return numberOfGuys;
+	}
+
+	public void setNumberOfGuys(int numberOfGuys) {
+		this.numberOfGuys = numberOfGuys;
+	}
+
 	public void add(Guy g){
 		Guy[] temp = new Guy[array.length + 1];
 		for(int i = 0; i < array.length; i++){
@@ -15,15 +25,38 @@ public class GuyList {
 		array = temp;
 	}
 	
+	public void removeAt(int index){
+		Guy[] temp = new Guy[array.length - 1];
+		for(int i = 0, count = 0; i < array.length; i++, count++){
+			if(i != index){	
+				temp[count] = array[i];
+			}
+			else{
+				count--;
+			}
+		}
+		array = temp;
+	}
+	
 	public void drawAll(){
 		for(int i = 0; i < array.length; i++){
 			array[i].draw();
 		}
+		Zen.setFont("Helvetica-14");
+		Zen.drawText("Num Guys: " + numberOfGuys, 100, 20);
 	}
 	
 	public void doYourThingAll(AppleList a, Barrel b, Home h, Map m){
+		if(array.length < numberOfGuys){
+			this.add(new Guy(Game.spawnX, Game.spawnY, 2, (int)(Math.random()*11)));
+		}
+		
 		for(int i = 0; i < array.length; i++){
 			array[i].doYourThing(a, b, h, m);
+			if(array[i].isDead()){
+				this.removeAt(i);
+				numberOfGuys--;
+			}
 		}
 	}
 	
@@ -35,5 +68,5 @@ public class GuyList {
 				array[i].checkAppleCollision(a.appleAt(j));
 			}
 		}
-	}	
+	}
 }
