@@ -34,7 +34,7 @@ public class Button{
 	
 	public boolean isClicked(){
 		if(isHovered()){
-			if(Zen.getMouseState() == MouseEvent.MOUSE_CLICKED){
+			if(Zen.getMouseState() == MouseEvent.MOUSE_RELEASED || Zen.getMouseState() == MouseEvent.MOUSE_CLICKED){
 				released = true;
 			}
 			if(released && Zen.getMouseState() == MouseEvent.MOUSE_PRESSED){

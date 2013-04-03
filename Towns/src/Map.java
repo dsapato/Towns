@@ -13,7 +13,6 @@ public class Map {
 	private int[][] mapColors;
 	private BufferedImage img;
 	
-	private MapTile home;
 	private MapTile barrel;
 	private MapTile spawn;
 	
@@ -34,15 +33,6 @@ public class Map {
 	public MapTile[][] getMap() {
 		return map;
 	}	
-	
-	public MapTile getHome() {
-		return home;
-	}
-
-	public void setHome(MapTile home) {
-		this.home = home;
-	}
-
 	public MapTile getBarrel() {
 		return barrel;
 	}
@@ -132,8 +122,6 @@ public class Map {
 			}
 		}					
 		//Special tiles
-		placeHome();
-		placeBarrel();
 		placeSpawn();
 		
 	}
@@ -143,29 +131,7 @@ public class Map {
 		if(chance > .6 && waterCount < 5)waterCount++;
 		else if(chance > .2 && waterCount > 1)waterCount--;
 	}
-	
-	private void placeHome(){
-		while(true){
-			int tryX =(int)(Math.random() * map.length);
-			int tryY =(int)(Math.random() * map[0].length);
-			if(map[tryX][tryY].isPassible()){
-				home = new MapTile(tryX,tryY, "grass", true);
-				map[tryX][tryY] = home;
-				return;
-			}
-		}
-	}
-	private void placeBarrel(){
-		while(true){
-			int tryX =(int)(Math.random() * map.length);
-			int tryY =(int)(Math.random() * map[0].length);
-			if(map[tryX][tryY].isPassible()){
-				barrel = new MapTile(tryX,tryY, "grass", true);
-				map[tryX][tryY] = barrel;
-				return;
-			}
-		}
-	}
+
 	private void placeSpawn(){
 		while(true){
 			int tryX =(int)(Math.random() * map.length);

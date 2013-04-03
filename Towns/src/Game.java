@@ -12,108 +12,91 @@ public class Game {
 	static final int TILESIZE = 20;
 	static int spawnX;
 	static int spawnY;
+	private static boolean paused = false;
+	
+	static Map map = new Map(mapWidth, mapHeight);
+	static Build build = new Build();
+	static GuyList guyList = new GuyList();
+	static BarrelList barrelList = new BarrelList();
+	static AppleList appleList = new AppleList();
+	static BedList bedList = new BedList();
 
 	public static void main(String[] args) {
 		
 		//Objects
-		Map map = new Map(mapWidth, mapHeight);
 		map.create();
 		spawnX = map.getSpawn().getX() * TILESIZE; spawnY = map.getSpawn().getY() * TILESIZE;
 		screenXPos = spawnX - Zen.getZenWidth()/2; screenYPos = spawnY - Zen.getZenHeight()/2;
-		Build build = new Build();
-		GuyList guyList = new GuyList();
-		Home home = new Home(map.getHome().x * TILESIZE,map.getHome().y * TILESIZE);
-		Barrel barrel = new Barrel(map.getBarrel().x * TILESIZE, map.getBarrel().y * TILESIZE);
-		AppleList appleList = new AppleList();
-		Button newGuyButton = new Button(Zen.getZenWidth() - 70, Zen.getZenHeight() - 30, 60, 20, "New Guy");
-		Button placeWallButton = new Button(Zen.getZenWidth() - 70, Zen.getZenHeight() - 60, 80, 20, "Place Wall");
-	
-		//Variables
+		GUI.init();
+		
+		//FPS Variables
 		int frames = 0;
 		long now;
 		long framesTimer = 0;
 		int FPS = 0;
-		boolean paused = false;
 		
 		while(Zen.isRunning()){	
-			//Check for escape
-			if(Zen.isKeyPressed((char)27)){
-				Zen.closeWindow();
-				System.exit(0);
-			}	
-			//Check for unpause
-			if(Zen.isKeyPressed(' ')){
-				paused = false;
-			}
+			//Check keys
+			CheckKeys();
+				
+			//Background		
+			map.update();
+			Zen.drawImage(map.getMapImg(), -screenXPos, -screenYPos);
+				
+			//Update
+			if(!paused)guyList.doYourThingAll();
+			appleList.update();
+			barrelList.update();
+			build.update();
 			
-			while(!paused){
-				//Check for escape key to quit
-				if(Zen.isKeyPressed((char)27)){
-					Zen.closeWindow();
-					System.exit(0);
-				}
+			//CheckCollisions
+			guyList.checkCollions();
+			appleList.checkBarrelCollision();
 				
-				//Check keys
-				CheckKeys();
-				
-				//Background		
-				map.update();
-				Zen.drawImage(map.getMapImg(), -screenXPos, -screenYPos);
-				
-				//Update
-				guyList.doYourThingAll(appleList, barrel, home, map);
-				appleList.update(map);
-				build.update(map);
-			
-				//CheckCollisions
-				guyList.checkCollions(appleList, barrel, home);
-				appleList.checkBarrelCollision(barrel);
-				
-				//Buttons
-				if(newGuyButton.isClicked()){
-					guyList.setNumberOfGuys(guyList.getNumberOfGuys() + 1);
-				}
-				if(placeWallButton.isClicked()){
-					build.setEnabled(true);
-				}
+			//Buttons
+			GUI.update();
 					
-				//Draw
-				guyList.drawAll();
-				home.draw();
-				barrel.draw();
-				appleList.drawAll();
-				newGuyButton.draw();
-				placeWallButton.draw();
-				build.draw();
-				
-				
-				//Pause
-				if(Zen.isKeyPressed(' ')){
-					Zen.setColor(Color.WHITE);
-					Zen.setFont("Helvetica-40");
-					Zen.drawText("Paused", Zen.getZenWidth()/2 - 90, Zen.getZenHeight()/2);
-					Zen.setFont("Helvetica-14");
-					paused = true;
-				}
-				
-				//FPS Counter
-				Zen.drawText("FPS: " + FPS, 10, 20);
-				frames++;
-				now = System.currentTimeMillis();
-				if(now - framesTimer > 1000){
-					framesTimer = System.currentTimeMillis();
-					FPS = frames;
-					frames = 0;
-				}
-				
-				Zen.flipBuffer();
+			//Draw
+			guyList.drawAll();
+			appleList.drawAll();
+			barrelList.drawAll();
+			build.draw();
+			GUI.draw();
 			
+			if(paused){
+				Zen.setColor(Color.WHITE);
+				Zen.setFont("Helvetica-40");
+				Zen.drawText("Paused", Zen.getZenWidth()/2 - 90, Zen.getZenHeight()/2);
+				Zen.setFont("Helvetica-14");				
 			}
+				
+			//FPS Counter
+			Zen.drawText("FPS: " + FPS, 10, 20);
+			frames++;
+			now = System.currentTimeMillis();
+			if(now - framesTimer > 1000){
+				framesTimer = System.currentTimeMillis();
+				FPS = frames;
+				frames = 0;
+			}
+				
+			Zen.flipBuffer();	
 		}
-
 	}
 	
 	static public void CheckKeys(){
+		//Check for escape
+		if(Zen.isKeyPressed((char)27)){
+			Zen.closeWindow();
+			System.exit(0);
+		}	
+		
+		//Pause
+		if(Zen.isKeyPressed(' ')){
+			paused = !paused;
+		}		
+		
+		//Arrows
 		if(Zen.isKeyPressed('a')){//Left
 			screenXPos -= scrollSpeed;
 		}

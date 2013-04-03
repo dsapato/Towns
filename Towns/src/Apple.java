@@ -44,7 +44,7 @@ public class Apple {
 	}
 	
 	public void draw(){
-		Zen.drawImage("apple.png", x - Game.screenXPos, y - Game.screenYPos, SIZE, SIZE);
+		Zen.drawImage("apple.png", x - Game.screenXPos, y - Game.screenYPos);
 		if(targetedBy != null){
 			Zen.drawText("Targeted.", x  - Game.screenXPos, y - Game.screenYPos);
 		}
@@ -57,13 +57,16 @@ public class Apple {
 		}
 	}
 	
-	public boolean checkBarrelCollision(Barrel b){
-		if(collided(b.getX(), b.getY(), b.getSIZE(), b.getSIZE()) && carrier != null){
-			b.incrementAppleCount(1);
-			carrier.setTargetApple(null);
-			return true;
+	public boolean checkBarrelCollision(){
+		for(int i = 0; i < Game.barrelList.length(); i ++){
+			if(collided(Game.barrelList.barrelAt(i).getX(), Game.barrelList.barrelAt(i).getY(), SIZE, SIZE) && carrier != null){
+				Game.barrelList.setTotalApples(Game.barrelList.getTotalApples() + 1);
+				carrier.setTargetApple(null);
+				return true;
+			}
 		}
 		return false;
+			
 	}
 	
 	public void attachToPlayer(Guy g){

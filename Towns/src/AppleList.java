@@ -42,24 +42,25 @@ public class AppleList {
 		}
 	}
 	
-	public void checkBarrelCollision(Barrel b){
+	public void checkBarrelCollision(){
 		for(int i = 0; i < array.length; i++){
-			if(array[i].checkBarrelCollision(b)){
+			if(array[i].checkBarrelCollision()){
 				removeAppleAt(i);
 			}
 		}
 	}
 	
-	public void update(Map m){
+	public void update(){
 		if(array.length < 15){
 			int tryX = (int)(Math.random()* Game.mapWidth);
 			int tryY = (int)(Math.random()* Game.mapHeight);
-			if(m.isLocationPassible(tryX, tryY)){
+			if(Game.map.isLocationPassible(tryX, tryY)){
 				this.add(new Apple(tryX,tryY));
 			}
 		}
 		for(int i = 0; i < array.length; i++){
 			array[i].update();
+			if(array[i].getX() < 0){removeAppleAt(i);}
 		}
 	}
 }

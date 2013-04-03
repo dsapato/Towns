@@ -95,7 +95,7 @@ public class Zen extends JApplet {
 				zen.bufferSize = new Dimension(width, height);
 				zen.bufferOptions = options;
 				zen.frame = frame;
-				zen.frame.setUndecorated(true);  //Danny Sapato
+				zen.frame.setUndecorated(true);  							//Danny Sapato
 
 				instanceMap.set(zen.master);
 				Container pane = zen.frame.getContentPane();
@@ -963,6 +963,7 @@ public class Zen extends JApplet {
 
 		public void mouseDragged(MouseEvent e) {
 			mouseListener.mouseClicked(e);
+			mouseState = MouseEvent.MOUSE_DRAGGED;
 			mouseMoved(e);
 		}
 			

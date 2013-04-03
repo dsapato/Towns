@@ -6,8 +6,8 @@ public class AStar {
 	
 	private static MapTile[][] map;
 	
-	public static List<MapTile> Search(int startX, int startY, int goalX, int goalY, Map m){
-		map = m.getMap();
+	public static List<MapTile> Search(int startX, int startY, int goalX, int goalY){
+		map = Game.map.getMap();
 		List<MapTile> open = new ArrayList<MapTile>();
 		List<MapTile> closed = new ArrayList<MapTile>();
 		MapTile start = new MapTile(startX / TILESIZE, startY / TILESIZE, "grass", true);
@@ -74,12 +74,10 @@ public class AStar {
 				}
 			}
 			//No path found
-			Zen.drawText("No path found.",Zen.getZenWidth() - 200, 20);
 			return null;
 		}
 		else{
 		//Goal is not passible
-		Zen.drawText("End point is not passible.",Zen.getZenWidth() - 200, 20);
 		return null;
 		}
 	}

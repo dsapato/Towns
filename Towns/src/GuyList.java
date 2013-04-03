@@ -15,6 +15,14 @@ public class GuyList {
 	public void setNumberOfGuys(int numberOfGuys) {
 		this.numberOfGuys = numberOfGuys;
 	}
+	
+	public int length(){
+		return array.length;
+	}
+	
+	public Guy guyAt(int index){
+		return array[index];
+	}
 
 	public void add(Guy g){
 		Guy[] temp = new Guy[array.length + 1];
@@ -46,13 +54,13 @@ public class GuyList {
 		Zen.drawText("Num Guys: " + numberOfGuys, 100, 20);
 	}
 	
-	public void doYourThingAll(AppleList a, Barrel b, Home h, Map m){
+	public void doYourThingAll(){
 		if(array.length < numberOfGuys){
-			this.add(new Guy(Game.spawnX, Game.spawnY, 2, (int)(Math.random()*11)));
+			this.add(new Guy(Game.spawnX, Game.spawnY, 4, (int)(Math.random()*4)));	//11
 		}
 		
 		for(int i = 0; i < array.length; i++){
-			array[i].doYourThing(a, b, h, m);
+			array[i].doYourThing();
 			if(array[i].isDead()){
 				this.removeAt(i);
 				numberOfGuys--;
@@ -60,12 +68,12 @@ public class GuyList {
 		}
 	}
 	
-	public void checkCollions(AppleList a, Barrel b, Home h){
+	public void checkCollions(){
 		for(int i = 0; i < array.length; i++){
-			array[i].checkBarrelCollision(b);
-			array[i].checkHomeCollision(h);
-			for(int j = 0; j < a.length(); j++){
-				array[i].checkAppleCollision(a.appleAt(j));
+			array[i].checkBarrelCollision();
+			array[i].checkBedCollision();
+			for(int j = 0; j < Game.appleList.length(); j++){
+				array[i].checkAppleCollision(Game.appleList.appleAt(j));
 			}
 		}
 	}
